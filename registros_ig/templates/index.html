@@ -1,38 +1,40 @@
 {% extends "base.html" %}
 
 {% block contenido %}
+
 <h1>Lista de movimientos</h1>
 
-        <table role="grid">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Concepto</th>
-                    <th>Monto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in datos %}
-                <tr>
-                    <td>{{item.date}}</td>
-                    <td>{{item.concept}}</td>
-                    <td>{{item.quantity}}€</td>
-                    <td>
-                        <a href="/update/{{item.id}}">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        </a>
-                        <a href="/delete/{{item.id}}">
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        
-        </table>
-        {% endblock %}
+<table role="grid">
+    <thead>
+    <tr>
+        <th>Fecha</th>
+        <th>Concepto</th>
+        <th>Monto</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in datos %}
+    <tr>
+        <td>{{item.date}}</td>
+        <td>{{item.concept}}</td>
+        <td>{{item.quantity}}€</td>
+        <td>
+            <a href="/update/{{item.id}}">
+                <span class="material-symbols-outlined">
+                    edit
+                </span>
+            </a>
+
+            <a href="/delete/{{item.id}}">
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

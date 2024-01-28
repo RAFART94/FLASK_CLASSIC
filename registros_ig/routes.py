@@ -18,16 +18,16 @@ def validarFormulario(datosFormularios):
 @app.route('/')
 def index():
     dic = select_all()
-    return render_template('index.html', datos=dic)
+    return render_template('index.html',datos=dic)
 
-@app.route('/new', methods=['GET','POST'])
+@app.route('/new',methods=['GET','POST'])
 def create():
     if request.method == 'GET':
-        return render_template('create.html', dataForm={})
+        return render_template('create.html',dataForm={})
     else:
         errores = validarFormulario(request.form)
         if errores:
-            return render_template('create.html', errors=errores, dataForm=request.form)
+            return render_template('create.html', errors = errores, dataForm= request.form)
         
         insert([request.form['date'],
                request.form['concept'],
@@ -36,10 +36,12 @@ def create():
 
         return redirect('/')
 
-@app.route('/delete/<int:id>', methods=['GET','POST'])
+@app.route('/delete/<int:id>',methods=['GET','POST'])
 def remove(id):
     if request.method == 'GET':
         resultado = select_by(id)
-        return render_template('delete.html', data=resultado)
+        return render_template('delete.html',data=resultado)
     else:
-        return 'registro para eliminar'
+        delete_by(id)
+        
+        return redirect('/')

@@ -25,7 +25,7 @@ def select_all():
 def insert(registroForm):
      conexion = sqlite3.connect(ORIGIN_DATA)
      cur = conexion.cursor()
-     res = cur.execute('INSERT INTO movements (date, concept, quantity) VALUES (?,?,?);', registroForm)
+     cur.execute('INSERT INTO movements(date,concept,quantity) VALUES(?,?,?);', registroForm)
 
      conexion.commit()#Función para validar el registro
 
@@ -36,4 +36,13 @@ def select_by(id):
      cur = conexion.cursor()
      res = cur.execute(f"SELECT * FROM movements WHERE id={id};")
      result = res.fetchall()
+     conexion.close()
      return result[0]
+
+def delete_by(id):
+     conexion = sqlite3.connect(ORIGIN_DATA)
+     cur = conexion.cursor()
+     cur.execute(f"DELETE FROM movements WHERE id={id};")
+     conexion.commit()#función para validar borrado
+
+     conexion.close()

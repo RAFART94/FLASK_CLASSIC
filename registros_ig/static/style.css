@@ -11,3 +11,7 @@ body{
     grid-auto-flow: auto 500px 1fr auto;
     margin: 0;
 }
+
+.boton_rojo{
+    background-color: #e53935;
+}
