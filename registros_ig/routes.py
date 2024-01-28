@@ -2,6 +2,7 @@ from registros_ig import app
 from flask import render_template, request, redirect
 from registros_ig.models import *
 from datetime import date
+from registros_ig.forms import MovementsForm
 
 def validarFormulario(datosFormularios):
     errores = []#Crear lista para guardar errores
@@ -22,19 +23,21 @@ def index():
 
 @app.route('/new',methods=['GET','POST'])
 def create():
-    if request.method == 'GET':
-        return render_template('create.html',dataForm={})
-    else:
-        errores = validarFormulario(request.form)
-        if errores:
-            return render_template('create.html', errors = errores, dataForm= request.form)
-        
-        insert([request.form['date'],
-               request.form['concept'],
-               request.form['quantity']
-               ])#aquí llamo a la función para registro
+    form = MovementsForm()
 
-        return redirect('/')
+    if request.method == 'GET':
+        return render_template('create.html',dataForm=form)
+    else:
+        if form.validate_on_submit():
+            insert([request.form['date'],
+                request.form['concept'],
+                request.form['quantity']
+                ])#aquí llamo a la función para registro
+            return redirect('/')
+        else:
+            return render_template('create.html', errors = {}, dataForm=form)
+
+        
 
 @app.route('/delete/<int:id>',methods=['GET','POST'])
 def remove(id):
