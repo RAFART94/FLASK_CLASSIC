@@ -18,5 +18,4 @@ def select_all():
           
           lista_diccionario.append(diccionario)
 
-    
      return lista_diccionario
