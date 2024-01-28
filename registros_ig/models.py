@@ -1,12 +1,11 @@
 import sqlite3
 from registros_ig import ORIGIN_DATA
+from registros_ig.conexion import Conexion
 
 def select_all():
-     conexion = sqlite3.connect(ORIGIN_DATA)
-     cur = conexion.cursor()
-     res = cur.execute("SELECT * FROM movements;")
-     filas = res.fetchall()#los datos de columnas (2024-01-01,Nomina Enero, 4000)
-     columnas = res.description#los nombres de columnas (id,0000)(date,000)(concep)
+     conectar = Conexion('SELECT * FROM movements;')
+     filas = conectar.res.fetchall()#los datos de columnas (2024-01-01,Nomina Enero, 4000)
+     columnas = conectar.res.description#los nombres de columnas (id,0000)(date,000)(concep)
 
      lista_diccionario = []
 
@@ -18,31 +17,23 @@ def select_all():
                posicion += 1
           
           lista_diccionario.append(diccionario)
-     conexion.close()
+     conectar.con.close()
 
      return lista_diccionario
 
 def insert(registroForm):
-     conexion = sqlite3.connect(ORIGIN_DATA)
-     cur = conexion.cursor()
-     cur.execute('INSERT INTO movements(date,concept,quantity) VALUES(?,?,?);', registroForm)
-
-     conexion.commit()#Función para validar el registro
-
-     conexion.close()
+     conectarInsert = Conexion('INSERT INTO movements(date,concept,quantity) VALUES(?,?,?);', registroForm)
+     conectarInsert.con.commit()#Función para validar el registro
+     conectarInsert.con.close()
 
 def select_by(id):
-     conexion = sqlite3.connect(ORIGIN_DATA)
-     cur = conexion.cursor()
-     res = cur.execute(f"SELECT * FROM movements WHERE id={id};")
-     result = res.fetchall()
-     conexion.close()
+     conectarSelectBy = Conexion(f'SELECT * FROM movements WHERE id={id};')
+     result = conectarSelectBy.res.fetchall()
+     conectarSelectBy.con.close()
+
      return result[0]
 
 def delete_by(id):
-     conexion = sqlite3.connect(ORIGIN_DATA)
-     cur = conexion.cursor()
-     cur.execute(f"DELETE FROM movements WHERE id={id};")
-     conexion.commit()#función para validar borrado
-
-     conexion.close()
+     conectarDeleteBy = Conexion(f"DELETE FROM movements WHERE id={id};")
+     conectarDeleteBy.con.commit()#función para validar borrado
+     conectarDeleteBy.con.close()
