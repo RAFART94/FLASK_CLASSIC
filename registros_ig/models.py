@@ -1,7 +1,22 @@
+import sqlite3
+
 def select_all():
-     diccionario = [{'date':'2024-01-01', 'concept':'Compra de reyes', 'quantity':-100},
-                   {'date':'2024-01-02', 'concept':'Compra de comida', 'quantity':-200},
-                   {'date':'2024-01-03', 'concept':'Compra de bebida', 'quantity':-50},
-                   {'date':'2024-01-04', 'concept':'Compra de roscon', 'quantity':-20}]
-     
-     return diccionario
+     conexion = sqlite3.connect("data/db_movimientos.sqlite")
+     cur = conexion.cursor()
+     res = cur.execute("SELECT * FROM movements;")
+     filas = res.fetchall()#los datos de columnas (2024-01-01,Nomina Enero, 4000)
+     columnas = res.description#los nombres de columnas (id,0000)(date,000)(concep)
+
+     lista_diccionario = []
+     diccionario = {}
+     for f in filas:
+          posicion = 0
+          diccionario = {}
+          for c in columnas:
+               diccionario[c[0]] = f[posicion]
+               posicion += 1
+          
+          lista_diccionario.append(diccionario)
+
+    
+     return lista_diccionario
