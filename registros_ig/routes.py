@@ -35,3 +35,11 @@ def create():
                ])#aquí llamo a la función para registro
 
         return redirect('/')
+
+@app.route('/delete/<int:id>', methods=['GET','POST'])
+def remove(id):
+    if request.method == 'GET':
+        resultado = select_by(id)
+        return render_template('delete.html', data=resultado)
+    else:
+        return 'registro para eliminar'
