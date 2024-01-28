@@ -1,5 +1,5 @@
 from registros_ig import app
-from flask import render_template, request
+from flask import render_template, request, redirect
 from registros_ig.models import *
 from datetime import date
 
@@ -29,4 +29,9 @@ def create():
         if errores:
             return render_template('create.html', errors=errores, dataForm=request.form)
         
-        return f'Aquí debo guardar en base de datos un nuevo registro: {request.form}'
+        insert([request.form['date'],
+               request.form['concept'],
+               request.form['quantity']
+               ])#aquí llamo a la función para registro
+
+        return redirect('/')

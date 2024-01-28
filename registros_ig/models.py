@@ -17,5 +17,15 @@ def select_all():
                posicion += 1
           
           lista_diccionario.append(diccionario)
+     conexion.close()
 
      return lista_diccionario
+
+def insert(registroForm):
+     conexion = sqlite3.connect("data/db_movimientos.sqlite")
+     cur = conexion.cursor()
+     res = cur.execute('INSERT INTO movements (date, concept, quantity) VALUES (?,?,?);', registroForm)
+
+     conexion.commit()#Función para validar el registro
+
+     conexion.close()
