@@ -3,7 +3,7 @@ from registros_ig import ORIGIN_DATA
 from registros_ig.conexion import Conexion
 
 def select_all():
-     conectar = Conexion('SELECT * FROM movements;')
+     conectar = Conexion('SELECT * FROM movements order by date DESC')
      filas = conectar.res.fetchall()#los datos de columnas (2024-01-01,Nomina Enero, 4000)
      columnas = conectar.res.description#los nombres de columnas (id,0000)(date,000)(concep)
 
@@ -42,3 +42,17 @@ def update_by(id, registro):
      conectarUpdateBy = Conexion(f"update movements set date=?, concept=?, quantity=? where id={id};",registro)
      conectarUpdateBy.con.commit()#función para validar borrado
      conectarUpdateBy.con.close()
+
+def select_ingreso():
+     conectarIngreso = Conexion('SELECT sum (quantity) FROM movements where quantity >0;')
+     resultadoIngreso = conectarIngreso.res.fetchall()
+     conectarIngreso.con.close()
+
+     return resultadoIngreso[0][0]
+
+def select_gasto():
+     conectarGasto = Conexion('SELECT sum (quantity) FROM movements where quantity <0;')
+     resultadoGasto = conectarGasto.res.fetchall()
+     conectarGasto.con.close()
+
+     return resultadoGasto[0][0]

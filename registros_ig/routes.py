@@ -19,7 +19,9 @@ def validarFormulario(datosFormularios):
 @app.route('/')
 def index():
     dic = select_all()
-    return render_template('index.html',datos=dic)
+    ganancia = select_ingreso()
+    perdida = select_gasto()
+    return render_template('index.html',datos=dic, ingreso=ganancia, gasto=perdida)
 
 @app.route('/new',methods=['GET','POST'])
 def create():
@@ -29,9 +31,9 @@ def create():
         return render_template('create.html',dataForm=form)
     else:
         if form.validate_on_submit():
-            insert([request.form['date'],
-                request.form['concept'],
-                request.form['quantity']
+            insert([form.date.data.isoformat(),
+                form.concept.data,
+                form.quantity.data
                 ])#aquí llamo a la función para registro
             flash('Movimiento registrado correctamente!!!')
             return redirect('/')
